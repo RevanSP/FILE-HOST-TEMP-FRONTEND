@@ -487,7 +487,7 @@ elements.form.addEventListener("submit", e => {
     resetForm();
   });
 
-  xhr.open("POST", "/upload");
+  xhr.open("POST", "https://file-host.revanspstudy28.workers.dev/upload");
   xhr.send(formData);
 });
 
