@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FILE HOST TEMPORARY</title>
+    <link rel="icon" type="image/png" href="https://pbs.twimg.com/media/GCAPjRSXUAAyOiz.png">
+    <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="font-sans overflow-hidden">
+    <video autoplay muted loop playsinline class="hidden md:block fixed top-0 left-0 w-full h-full object-cover z-[-1]">
+        <source src="makoto.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+    <video autoplay muted loop playsinline class="block md:hidden fixed top-0 left-0 w-full h-full object-cover z-[-1]">
+        <source src="makoto-mobile.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+    <div class="fixed inset-0 bg-black bg-opacity-40 z-[-1]"></div>
+
+    <div class="fixed inset-0 flex items-center justify-center p-4 md:p-8">
+        <div class="glass rounded-2xl p-5 max-w-2xl w-full shadow-xl text-white">
+            <div class="flex items-center justify-between mb-4">
+                <h1 class="text-xl font-bold text-white/90">
+                    FILE HOST TEMPORARY
+                </h1>
+
+                <button
+                    class="glass px-2 py-2 rounded-lg text-xs glass2 hover:bg-white/20 border border-white/20 text-white font-semibold transition disabled:opacity-50 disabled:cursor-not-allowed">
+                    <i data-lucide="history" class="h-5 w-5 text-white/60"></i>
+                </button>
+
+            </div>
+            <form id="uploadForm" class="flex flex-col items-center space-y-4">
+                <label for="fileInput" id="uploadArea"
+                    class="upload-area cursor-pointer border-2 border-dashed glass2 border-white/40 p-6 w-full text-center rounded-xl">
+                    <div class="flex flex-col items-center space-y-4">
+                        <i data-lucide="upload-cloud" id="uploadIcon" class="h-14 w-14 text-white/60"></i>
+                        <i data-lucide="loader-2" id="loadingIcon" class="h-14 w-14 text-white/60 loading hidden"></i>
+
+                        <div>
+                            <p class="text-sm font-medium text-white/90">Drop files here or click to browse</p>
+                            <p class="text-xs text-white/60 mt-2">Max upload size is 128 MiB & files expire after 3
+                                hours.</p>
+                        </div>
+
+                        <input type="file" id="fileInput" name="files[]" class="hidden" required>
+
+                        <div id="fileInfo" class="hidden text-xs text-white/80 bg-white/10 rounded-lg p-3 mt-4">
+                            <p id="fileName" class="font-medium"></p>
+                            <p id="fileSize" class="text-white/60"></p>
+                        </div>
+                    </div>
+                </label>
+
+                <button type="submit" id="submitBtn"
+                    class="glass px-3 w-full py-2 rounded-lg text-xs glass2 hover:bg-white/20 border border-white/20 text-white font-semibold transition disabled:opacity-50 disabled:cursor-not-allowed"
+                    disabled>
+                    <span id="btnText">UPLOAD</span>
+                </button>
+
+                <div id="progressContainer" class="hidden w-full mt-4">
+                    <div class="glass2 rounded-lg p-4">
+                        <div class="flex justify-between text-sm text-white/80 mb-2">
+                            <span id="progressStatus" class="uppercase">Preparing ...</span>
+                            <span id="progressText">0%</span>
+                        </div>
+                        <div class="w-full h-2 bg-white/10 rounded-full overflow-hidden">
+                            <div id="progressBar" class="h-full bg-green-400 transition-all duration-300"
+                                style="width: 0%"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex gap-2 w-full mt-4">
+                    <input type="text" id="uploadResult" placeholder="Result Link Here ..."
+                        class="glass2 flex-1 px-3 py-2 rounded-lg text-xs text-white/90 glass2 border border-white/20"
+                        readonly>
+                    <button id="copyButton"
+                        class="glass px-3 py-2 rounded-lg text-xs glass2 hover:bg-white/20 border border-white/20 text-white font-semibold transition disabled:opacity-50 disabled:cursor-not-allowed"
+                        disabled>
+                        <span id="copyIcon" data-lucide="copy" class="h-4 w-4"></span>
+                    </button>
+                </div>
+            </form>
+
+            <hr class="my-5 border-white/20">
+
+            <div class="grid mt-2 grid-cols-4 gap-2">
+                <a href="https://github.com/RevanSP" target="_blank"
+                    class="glass p-2 rounded-lg text-xs glass2 hover:bg-white/20 border border-white/20 text-white font-semibold transition flex items-center justify-center">
+                    <i data-lucide="github" class="h-5 w-5"></i>
+                </a>
+                <a href="https://www.instagram.com/m9nokuro" target="_blank"
+                    class="glass p-2 rounded-lg text-xs glass2 hover:bg-white/20 border border-white/20 text-white font-semibold transition flex items-center justify-center">
+                    <i data-lucide="instagram" class="h-5 w-5"></i>
+                </a>
+                <a href="https://web.facebook.com/profile.php?id=100082958149027&_rdc=1&_rdr" target="_blank"
+                    class="glass p-2 rounded-lg text-xs glass2 hover:bg-white/20 border border-white/20 text-white font-semibold transition flex items-center justify-center">
+                    <i data-lucide="facebook" class="h-5 w-5"></i>
+                </a>
+                <a href="mailto:revanspstudy28@gmail.com" target="_blank"
+                    class="glass p-2 rounded-lg text-xs glass2 hover:bg-white/20 border border-white/20 text-white font-semibold transition flex items-center justify-center">
+                    <i data-lucide="mail" class="h-5 w-5"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div id="historyModal"
+        class="fixed inset-0 bg-black/50 backdrop-blur-sm hidden items-center justify-center z-50 opacity-0 transition-opacity duration-300">
+        <div
+            class="glass rounded-2xl p-5 max-w-4xl w-full mx-4 max-h-[80vh] overflow-hidden flex flex-col transform scale-95 transition-transform duration-300">
+            <div class="flex items-center justify-between mb-4">
+                <h2 class="text-xl font-bold text-white/90">HISTORY</h2>
+                <div class="flex items-center gap-2">
+                    <button id="deleteSelectedButton"
+                        class="glass px-3 py-2 rounded-lg text-xs glass2 hover:bg-white/20 border border-white/20 text-white font-semibold transition flex items-center gap-1 disabled:opacity-50 disabled:cursor-not-allowed"
+                        disabled>
+                        <i data-lucide="trash-2" class="h-4 w-4"></i>
+                        Selected
+                    </button>
+                    <button id="closeModal"
+                        class="glass p-2 rounded-lg text-xs glass2 hover:bg-white/20 border border-white/20 text-white font-semibold transition">
+                        <i data-lucide="x" class="h-5 w-5"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="mb-4">
+                <div class="relative">
+                    <input type="text" id="searchInput" placeholder="Search links..."
+                        class="glass2 w-full px-4 py-2 rounded-lg text-sm text-white/90 border border-white/20 focus:outline-none focus:border-white/40">
+                    <i data-lucide="search"
+                        class="h-4 w-4 text-white/60 absolute right-3 top-1/2 transform -translate-y-1/2"></i>
+                </div>
+            </div>
+
+            <div class="overflow-x-auto flex-1">
+                <table class="!truncate w-full text-sm text-white/90">
+                    <thead>
+                        <tr class="border-b border-white/20">
+                            <th class="text-left py-3 px-4 w-10">
+                                <input type="checkbox" id="selectAllCheckbox" class="glass2 border-white/20">
+                            </th>
+                            <th class="text-left py-3 px-4">LINK</th>
+                            <th class="text-left py-3 px-4">EXPIRED IN</th>
+                            <th class="text-right py-3 px-4">ACTIONS</th>
+                        </tr>
+                    </thead>
+                    <tbody id="historyTableBody">
+                        <!-- Table content will be populated by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="flex items-center justify-between mt-4 pt-4 border-t border-white/20">
+                <div class="text-sm text-white/60">
+                    Showing <span id="currentPage">1</span> of <span id="totalPages">1</span>
+                </div>
+                <div class="flex gap-2">
+                    <button id="prevPage"
+                        class="glass px-3 py-1 rounded-lg text-xs glass2 hover:bg-white/20 border border-white/20 text-white font-semibold transition disabled:opacity-50">
+                        Previous
+                    </button>
+                    <button id="nextPage"
+                        class="glass px-3 py-1 rounded-lg text-xs glass2 hover:bg-white/20 border border-white/20 text-white font-semibold transition disabled:opacity-50">
+                        Next
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js">
+    </script>
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+
+</html>
