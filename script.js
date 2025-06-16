@@ -15,9 +15,10 @@ const elements = {
     container: document.getElementById("progressContainer"),
     bar: document.getElementById("progressBar"),
     text: document.getElementById("progressText"),
-    status: document.getElementById("progressStatus")
+    status: document.getElementById("progressStatus"),
   },
-  historyButton: document.querySelector('[data-lucide="history"]').parentElement,
+  historyButton: document.querySelector('[data-lucide="history"]')
+    .parentElement,
   historyModal: document.getElementById("historyModal"),
   closeModal: document.getElementById("closeModal"),
   searchInput: document.getElementById("searchInput"),
@@ -27,29 +28,29 @@ const elements = {
   currentPageSpan: document.getElementById("currentPage"),
   totalPagesSpan: document.getElementById("totalPages"),
   selectAllCheckbox: document.getElementById("selectAllCheckbox"),
-  deleteSelectedButton: document.getElementById("deleteSelectedButton")
+  deleteSelectedButton: document.getElementById("deleteSelectedButton"),
 };
 
-elements.area.addEventListener("click", e => {
+elements.area.addEventListener("click", (e) => {
   e.preventDefault();
   e.stopPropagation();
   elements.input.click();
 });
 
-elements.input.addEventListener("click", e => e.stopPropagation());
+elements.input.addEventListener("click", (e) => e.stopPropagation());
 
-elements.area.addEventListener("dragover", e => {
+elements.area.addEventListener("dragover", (e) => {
   e.preventDefault();
   elements.area.classList.add("dragover");
 });
 
-elements.area.addEventListener("dragleave", e => {
+elements.area.addEventListener("dragleave", (e) => {
   if (!elements.area.contains(e.relatedTarget)) {
     elements.area.classList.remove("dragover");
   }
 });
 
-elements.area.addEventListener("drop", e => {
+elements.area.addEventListener("drop", (e) => {
   e.preventDefault();
   elements.area.classList.remove("dragover");
   const files = e.dataTransfer.files;
@@ -61,17 +62,17 @@ elements.area.addEventListener("drop", e => {
 
 const updateButtonState = (isValid) => {
   elements.submit.disabled = !isValid;
-  elements.submit.setAttribute('aria-disabled', !isValid);
+  elements.submit.setAttribute("aria-disabled", !isValid);
   if (!isValid) {
-    elements.submit.style.pointerEvents = 'none';
-    elements.submit.style.opacity = '0.5';
+    elements.submit.style.pointerEvents = "none";
+    elements.submit.style.opacity = "0.5";
   } else {
-    elements.submit.style.pointerEvents = 'auto';
-    elements.submit.style.opacity = '1';
+    elements.submit.style.pointerEvents = "auto";
+    elements.submit.style.opacity = "1";
   }
 };
 
-elements.input.addEventListener("change", e => {
+elements.input.addEventListener("change", (e) => {
   if (e.target.files.length) {
     const file = e.target.files[0];
     displayFileInfo(file);
@@ -82,7 +83,7 @@ elements.input.addEventListener("change", e => {
   }
 });
 
-const displayFileInfo = file => {
+const displayFileInfo = (file) => {
   elements.name.textContent = file.name;
   elements.size.textContent = formatFileSize(file.size);
   elements.info.classList.remove("hidden");
@@ -90,7 +91,7 @@ const displayFileInfo = file => {
   setTimeout(() => elements.area.classList.remove("success-glow"), 2000);
 };
 
-const formatFileSize = bytes => {
+const formatFileSize = (bytes) => {
   if (bytes === 0) return "0 Bytes";
   const k = 1024;
   const sizes = ["Bytes", "KB", "MB", "GB"];
@@ -107,7 +108,7 @@ const updateProgress = (percent, status) => {
   }
 };
 
-const setLoadingState = isLoading => {
+const setLoadingState = (isLoading) => {
   elements.submit.disabled = isLoading;
   elements.btnText.textContent = "PROCESSING ...";
   elements.uploadIcon.classList.toggle("hidden", isLoading);
@@ -130,15 +131,15 @@ const saveToHistory = (url) => {
   const newItem = {
     url,
     timestamp: Date.now(),
-    expiresAt: Date.now() + (3 * 60 * 60 * 1000)
+    expiresAt: Date.now() + 3 * 60 * 60 * 1000,
   };
   history.unshift(newItem);
-  localStorage.setItem('uploadHistory', JSON.stringify(history));
+  localStorage.setItem("uploadHistory", JSON.stringify(history));
 };
 
 const getHistory = () => {
-  const history = JSON.parse(localStorage.getItem('uploadHistory') || '[]');
-  return history.filter(item => item.expiresAt > Date.now());
+  const history = JSON.parse(localStorage.getItem("uploadHistory") || "[]");
+  return history.filter((item) => item.expiresAt > Date.now());
 };
 
 const formatTimeLeft = (expiresAt) => {
@@ -150,23 +151,23 @@ const formatTimeLeft = (expiresAt) => {
 };
 
 const deleteFromHistory = (url) => {
-  const history = JSON.parse(localStorage.getItem('uploadHistory') || '[]');
-  const updatedHistory = history.filter(item => item.url !== url);
-  localStorage.setItem('uploadHistory', JSON.stringify(updatedHistory));
+  const history = JSON.parse(localStorage.getItem("uploadHistory") || "[]");
+  const updatedHistory = history.filter((item) => item.url !== url);
+  localStorage.setItem("uploadHistory", JSON.stringify(updatedHistory));
   renderHistory();
 };
 
 const deleteSelectedFromHistory = () => {
-  const history = JSON.parse(localStorage.getItem('uploadHistory') || '[]');
-  const updatedHistory = history.filter(item => !selectedItems.has(item.url));
-  localStorage.setItem('uploadHistory', JSON.stringify(updatedHistory));
+  const history = JSON.parse(localStorage.getItem("uploadHistory") || "[]");
+  const updatedHistory = history.filter((item) => !selectedItems.has(item.url));
+  localStorage.setItem("uploadHistory", JSON.stringify(updatedHistory));
   selectedItems.clear();
   renderHistory();
 };
 
 const toggleSelectAll = (checked) => {
-  const checkboxes = document.querySelectorAll('.item-checkbox');
-  checkboxes.forEach(checkbox => {
+  const checkboxes = document.querySelectorAll(".item-checkbox");
+  checkboxes.forEach((checkbox) => {
     checkbox.checked = checked;
     const url = checkbox.dataset.url;
     if (checked) {
@@ -186,21 +187,24 @@ const toggleItemSelection = (url, checked) => {
   }
   updateDeleteSelectedButton();
 
-  const checkboxes = document.querySelectorAll('.item-checkbox');
-  const allChecked = Array.from(checkboxes).every(cb => cb.checked);
+  const checkboxes = document.querySelectorAll(".item-checkbox");
+  const allChecked = Array.from(checkboxes).every((cb) => cb.checked);
   elements.selectAllCheckbox.checked = allChecked;
 };
 
 const updateDeleteSelectedButton = () => {
   elements.deleteSelectedButton.disabled = selectedItems.size === 0;
-  elements.deleteSelectedButton.classList.toggle('opacity-50', selectedItems.size === 0);
+  elements.deleteSelectedButton.classList.toggle(
+    "opacity-50",
+    selectedItems.size === 0
+  );
 };
 
 const renderHistory = () => {
   const history = getHistory();
   const searchTerm = elements.searchInput.value.toLowerCase();
 
-  filteredHistory = history.filter(item =>
+  filteredHistory = history.filter((item) =>
     item.url.toLowerCase().includes(searchTerm)
   );
 
@@ -236,10 +240,14 @@ const renderHistory = () => {
     `;
     currentPage = 1;
   } else {
-    elements.historyTableBody.innerHTML = pageItems.map(item => `
+    elements.historyTableBody.innerHTML = pageItems
+      .map(
+        (item) => `
       <tr class="border-b border-white/10 hover:bg-white/5">
         <td class="py-3 px-4">
-          <input type="checkbox" class="item-checkbox glass2 border-white/20" data-url="${item.url}" ${selectedItems.has(item.url) ? 'checked' : ''}>
+          <input type="checkbox" class="item-checkbox glass2 border-white/20" data-url="${
+            item.url
+          }" ${selectedItems.has(item.url) ? "checked" : ""}>
         </td>
         <td class="py-3 px-4">
           <span class="truncate max-w-[300px] block">${item.url}</span>
@@ -247,31 +255,41 @@ const renderHistory = () => {
         <td class="py-3 px-4">${formatTimeLeft(item.expiresAt)}</td>
         <td class="py-3 px-4">
           <div class="flex items-center justify-end gap-2">
-            <button class="copy-link glass px-2 py-2 rounded-lg text-xs glass2 hover:bg-white/20 border border-white/20 text-white font-semibold transition flex items-center gap-1" data-url="${item.url}">
+            <button class="copy-link glass px-2 py-2 rounded-lg text-xs glass2 hover:bg-white/20 border border-white/20 text-white font-semibold transition flex items-center gap-1" data-url="${
+              item.url
+            }">
               <i data-lucide="copy" class="h-4 w-4"></i>
             </button>
-            <a href="${item.url}" target="_blank" class="glass px-2 py-2 rounded-lg text-xs glass2 hover:bg-white/20 border border-white/20 text-white font-semibold transition flex items-center gap-1">
+            <a href="${
+              item.url
+            }" target="_blank" class="glass px-2 py-2 rounded-lg text-xs glass2 hover:bg-white/20 border border-white/20 text-white font-semibold transition flex items-center gap-1">
               <i data-lucide="external-link" class="h-4 w-4"></i>
             </a>
-            <button class="delete-link glass px-2 py-2 rounded-lg text-xs glass2 hover:bg-white/20 border border-white/20 text-white font-semibold transition flex items-center gap-1" data-url="${item.url}">
+            <button class="delete-link glass px-2 py-2 rounded-lg text-xs glass2 hover:bg-white/20 border border-white/20 text-white font-semibold transition flex items-center gap-1" data-url="${
+              item.url
+            }">
               <i data-lucide="trash-2" class="h-4 w-4"></i>
             </button>
           </div>
         </td>
       </tr>
-    `).join('');
+    `
+      )
+      .join("");
   }
 
   elements.currentPageSpan.textContent = currentPage;
   elements.totalPagesSpan.textContent = totalPages || 1;
-  elements.prevPage.disabled = currentPage === 1 || filteredHistory.length === 0;
-  elements.nextPage.disabled = currentPage === totalPages || filteredHistory.length === 0;
+  elements.prevPage.disabled =
+    currentPage === 1 || filteredHistory.length === 0;
+  elements.nextPage.disabled =
+    currentPage === totalPages || filteredHistory.length === 0;
 
-  elements.prevPage.classList.toggle('opacity-50', elements.prevPage.disabled);
-  elements.nextPage.classList.toggle('opacity-50', elements.nextPage.disabled);
+  elements.prevPage.classList.toggle("opacity-50", elements.prevPage.disabled);
+  elements.nextPage.classList.toggle("opacity-50", elements.nextPage.disabled);
 
-  document.querySelectorAll('.item-checkbox').forEach(checkbox => {
-    checkbox.addEventListener('change', (e) => {
+  document.querySelectorAll(".item-checkbox").forEach((checkbox) => {
+    checkbox.addEventListener("change", (e) => {
       toggleItemSelection(e.target.dataset.url, e.target.checked);
     });
   });
@@ -279,37 +297,37 @@ const renderHistory = () => {
   lucide.createIcons();
 };
 
-elements.historyButton.addEventListener('click', () => {
-  elements.historyModal.classList.remove('hidden');
+elements.historyButton.addEventListener("click", () => {
+  elements.historyModal.classList.remove("hidden");
   elements.historyModal.offsetHeight;
-  elements.historyModal.classList.add('flex');
-  elements.historyModal.classList.remove('opacity-0');
-  elements.historyModal.querySelector('.glass').classList.remove('scale-95');
+  elements.historyModal.classList.add("flex");
+  elements.historyModal.classList.remove("opacity-0");
+  elements.historyModal.querySelector(".glass").classList.remove("scale-95");
   renderHistory();
 });
 
-elements.closeModal.addEventListener('click', () => {
-  elements.historyModal.classList.add('opacity-0');
-  elements.historyModal.querySelector('.glass').classList.add('scale-95');
+elements.closeModal.addEventListener("click", () => {
+  elements.historyModal.classList.add("opacity-0");
+  elements.historyModal.querySelector(".glass").classList.add("scale-95");
   setTimeout(() => {
-    elements.historyModal.classList.add('hidden');
-    elements.historyModal.classList.remove('flex');
+    elements.historyModal.classList.add("hidden");
+    elements.historyModal.classList.remove("flex");
   }, 300);
 });
 
-elements.searchInput.addEventListener('input', () => {
+elements.searchInput.addEventListener("input", () => {
   currentPage = 1;
   renderHistory();
 });
 
-elements.prevPage.addEventListener('click', () => {
+elements.prevPage.addEventListener("click", () => {
   if (currentPage > 1) {
     currentPage--;
     renderHistory();
   }
 });
 
-elements.nextPage.addEventListener('click', () => {
+elements.nextPage.addEventListener("click", () => {
   const totalPages = Math.ceil(filteredHistory.length / itemsPerPage);
   if (currentPage < totalPages) {
     currentPage++;
@@ -317,10 +335,10 @@ elements.nextPage.addEventListener('click', () => {
   }
 });
 
-elements.historyTableBody.addEventListener('click', (e) => {
-  if (e.target.closest('.copy-link')) {
-    const url = e.target.closest('.copy-link').dataset.url;
-    const button = e.target.closest('.copy-link');
+elements.historyTableBody.addEventListener("click", (e) => {
+  if (e.target.closest(".copy-link")) {
+    const url = e.target.closest(".copy-link").dataset.url;
+    const button = e.target.closest(".copy-link");
 
     copyToClipboard(url);
 
@@ -331,9 +349,9 @@ elements.historyTableBody.addEventListener('click', (e) => {
       button.innerHTML = `<i data-lucide="copy" class="h-4 w-4"></i>`;
       lucide.createIcons();
     }, 3000);
-  } else if (e.target.closest('.delete-link')) {
-    const url = e.target.closest('.delete-link').dataset.url;
-    const button = e.target.closest('.delete-link');
+  } else if (e.target.closest(".delete-link")) {
+    const url = e.target.closest(".delete-link").dataset.url;
+    const button = e.target.closest(".delete-link");
 
     button.innerHTML = `<i data-lucide="loader-2" class="h-4 w-4 animate-spin"></i>`;
     lucide.createIcons();
@@ -369,7 +387,7 @@ elements.copyButton.addEventListener("click", (e) => {
   }
 });
 
-const copyToClipboard = async text => {
+const copyToClipboard = async (text) => {
   try {
     await navigator.clipboard.writeText(text);
     const icon = document.getElementById("copyIcon");
@@ -411,7 +429,7 @@ const copyToClipboard = async text => {
 };
 
 const resetForm = () => {
-  elements.input.value = '';
+  elements.input.value = "";
   elements.info.classList.add("hidden");
   elements.submit.disabled = true;
   elements.btnText.textContent = "UPLOAD";
@@ -422,7 +440,7 @@ const resetForm = () => {
   updateButtonState(false);
 };
 
-elements.form.addEventListener("submit", e => {
+elements.form.addEventListener("submit", (e) => {
   e.preventDefault();
   const file = elements.input.files[0];
 
@@ -439,7 +457,7 @@ elements.form.addEventListener("submit", e => {
 
   const xhr = new XMLHttpRequest();
 
-  xhr.upload.addEventListener("progress", e => {
+  xhr.upload.addEventListener("progress", (e) => {
     if (e.lengthComputable) {
       updateProgress(Math.round((e.loaded / e.total) * 100), "Uploading...");
     }
@@ -470,7 +488,10 @@ elements.form.addEventListener("submit", e => {
     } else {
       try {
         const data = JSON.parse(xhr.responseText);
-        showResult("error", data.description || `Upload failed with status: ${xhr.status}`);
+        showResult(
+          "error",
+          data.description || `Upload failed with status: ${xhr.status}`
+        );
         updateButtonState(false);
         resetForm();
       } catch (error) {
@@ -487,15 +508,18 @@ elements.form.addEventListener("submit", e => {
     resetForm();
   });
 
-  xhr.open("POST", "https://file-host.revanspstudy28.workers.dev/upload");
+  xhr.open(
+    "POST",
+    "https://file-host-temp-backend.revanspstudy28.workers.dev/upload"
+  );
   xhr.send(formData);
 });
 
-elements.selectAllCheckbox.addEventListener('change', (e) => {
+elements.selectAllCheckbox.addEventListener("change", (e) => {
   toggleSelectAll(e.target.checked);
 });
 
-elements.deleteSelectedButton.addEventListener('click', () => {
+elements.deleteSelectedButton.addEventListener("click", () => {
   if (selectedItems.size > 0) {
     deleteSelectedFromHistory();
   }
