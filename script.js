@@ -125,6 +125,7 @@ let currentPage = 1;
 const itemsPerPage = 10;
 let filteredHistory = [];
 let selectedItems = new Set();
+let historyInterval = null;
 
 const saveToHistory = (url) => {
   const history = getHistory();
@@ -301,6 +302,9 @@ elements.historyButton.addEventListener("click", () => {
   elements.historyModal.classList.remove("opacity-0");
   elements.historyModal.querySelector(".glass").classList.remove("scale-95");
   renderHistory();
+  if (!historyInterval) {
+    historyInterval = setInterval(renderHistory, 1000);
+  }
 });
 
 elements.closeModal.addEventListener("click", () => {
@@ -309,6 +313,10 @@ elements.closeModal.addEventListener("click", () => {
   setTimeout(() => {
     elements.historyModal.classList.add("hidden");
     elements.historyModal.classList.remove("flex");
+    if (historyInterval) {
+      clearInterval(historyInterval);
+      historyInterval = null;
+    }
   }, 300);
 });
 
