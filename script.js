@@ -147,7 +147,8 @@ const formatTimeLeft = (expiresAt) => {
   const timeLeft = expiresAt - now;
   const hours = Math.floor(timeLeft / (60 * 60 * 1000));
   const minutes = Math.floor((timeLeft % (60 * 60 * 1000)) / (60 * 1000));
-  return `${hours}h ${minutes}m`;
+  const seconds = Math.floor((timeLeft % (60 * 1000)) / 1000);
+  return `${hours}h ${minutes}m ${seconds}s`;
 };
 
 const deleteFromHistory = (url) => {
@@ -245,8 +246,7 @@ const renderHistory = () => {
         (item) => `
       <tr class="border-b border-white/10 hover:bg-white/5">
         <td class="py-3 px-4">
-          <input type="checkbox" class="item-checkbox glass2 border-white/20" data-url="${
-            item.url
+          <input type="checkbox" class="item-checkbox glass2 border-white/20" data-url="${item.url
           }" ${selectedItems.has(item.url) ? "checked" : ""}>
         </td>
         <td class="py-3 px-4">
@@ -255,19 +255,16 @@ const renderHistory = () => {
         <td class="py-3 px-4">${formatTimeLeft(item.expiresAt)}</td>
         <td class="py-3 px-4">
           <div class="flex items-center justify-end gap-2">
-            <button class="copy-link glass px-2 py-2 rounded-lg text-xs glass2 hover:bg-white/20 border border-white/20 text-white font-semibold transition flex items-center gap-1" data-url="${
-              item.url
-            }">
+            <button class="copy-link glass px-2 py-2 rounded-lg text-xs glass2 hover:bg-white/20 border border-white/20 text-white font-semibold transition flex items-center gap-1" data-url="${item.url
+          }">
               <i data-lucide="copy" class="h-4 w-4"></i>
             </button>
-            <a href="${
-              item.url
-            }" target="_blank" class="glass px-2 py-2 rounded-lg text-xs glass2 hover:bg-white/20 border border-white/20 text-white font-semibold transition flex items-center gap-1">
+            <a href="${item.url
+          }" target="_blank" class="glass px-2 py-2 rounded-lg text-xs glass2 hover:bg-white/20 border border-white/20 text-white font-semibold transition flex items-center gap-1">
               <i data-lucide="external-link" class="h-4 w-4"></i>
             </a>
-            <button class="delete-link glass px-2 py-2 rounded-lg text-xs glass2 hover:bg-white/20 border border-white/20 text-white font-semibold transition flex items-center gap-1" data-url="${
-              item.url
-            }">
+            <button class="delete-link glass px-2 py-2 rounded-lg text-xs glass2 hover:bg-white/20 border border-white/20 text-white font-semibold transition flex items-center gap-1" data-url="${item.url
+          }">
               <i data-lucide="trash-2" class="h-4 w-4"></i>
             </button>
           </div>
